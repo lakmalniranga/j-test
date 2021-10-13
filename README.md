@@ -55,3 +55,9 @@ Since the application utilizes repository pattern, developers can easily add an 
 
 -   Add a datastore. Idealy MongoDB or Redis.
 -   Add Swagger/OpenAPI as an API document.
+
+
+## Additional Notes
+
+After the interview i realized that patrick asked about `primitive` data types. But i have answered it with both `primitive` and `Objects` 😀
+
