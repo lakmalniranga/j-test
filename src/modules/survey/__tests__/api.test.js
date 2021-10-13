@@ -74,4 +74,25 @@ describe('modules/survey', () => {
 
 		expect(res.body.error).toEqual(expect.objectContaining(INVALID_ANSWER_GIVEN));
 	});
+
+	test('User should be able to see results of survey', async () => {
+		// Create survey
+		const surveyId = surveyRepository.createSurvey({ ...requestData });
+
+		// answer to survey
+		surveyRepository.addAnswer({ surveyId, answerId: 1 });
+		surveyRepository.addAnswer({ surveyId, answerId: 1 });
+		surveyRepository.addAnswer({ surveyId, answerId: 2 });
+
+		const res = await superTest(app).get(`/survey/${surveyId}/result`).expect(HttpStatus.OK);
+
+		expect(res.body.result).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ answerId: 0, result: 0, value: 'black' }),
+				expect.objectContaining({ answerId: 1, result: 2, value: 'white' }),
+				expect.objectContaining({ answerId: 3, result: 0, value: 'yellow' }),
+				expect.objectContaining({ answerId: 2, result: 1, value: 'blue' }),
+			])
+		);
+	});
 });

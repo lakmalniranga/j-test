@@ -40,6 +40,32 @@ class SurveyBusiness {
 		const answer = survey.answers.find((answer) => answer.answerId === answerId);
 		return !!answer;
 	}
+
+	/**
+	 * -- NOTE --
+	 * This can be done in a optimized way when we use actual database engine.
+	 * So we can utilize eager loading and database count methods
+	 */
+	async getSurveyResults({ surveyId }) {
+		const { answers, ...rest } = await this.getSurvey({ surveyId });
+
+		// get results for each answer
+		const surveyResult = {};
+		for (const { answerId } of answers) {
+			const result = surveyRepository.getAnswersBySurveyIdAndAnswerId({
+				surveyId,
+				answerId,
+			});
+			surveyResult[answerId] = result.length;
+		}
+
+		// format results with original survey data
+		const result = answers.map((answer) => {
+			return { ...answer, result: surveyResult[answer.answerId] };
+		});
+
+		return { ...rest, result };
+	}
 }
 
 export default new SurveyBusiness();

@@ -24,7 +24,13 @@ export class SurveyRepository {
 	}
 
 	getAnswersBySurveyId({ surveyId }) {
-		return answers.filter((survey) => survey.surveyId === surveyId);
+		return answers.filter((answer) => answer.surveyId === surveyId);
+	}
+
+	getAnswersBySurveyIdAndAnswerId({ surveyId, answerId }) {
+		return answers.filter(
+			(answer) => answer.surveyId === surveyId && answer.answerId === answerId
+		);
 	}
 }
 
