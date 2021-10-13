@@ -18,6 +18,7 @@
 				"alias": {
 					"@src": "./src",
 					"@dto": "./src/dto",
+					"@utils": "./src/utils",
 					"@errors": "./src/errors.js",
 					"@modules": "./src/modules",
 					"@services": "./src/services",

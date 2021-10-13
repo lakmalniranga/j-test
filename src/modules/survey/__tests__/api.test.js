@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes';
 import superTest from 'supertest';
 
 import app from '@src/app';
-import { RESOURCE_NOT_FOUND } from '@errors';
+import { RESOURCE_NOT_FOUND, VALIDATION_ERROR } from '@errors';
 import surveyRepository from '@modules/survey/repository';
 
 const requestData = {
@@ -37,5 +37,16 @@ describe('modules/survey', () => {
 	test('User should be able to see 404 if the survey id is invalid', async () => {
 		const res = await superTest(app).get('/survey/111').expect(HttpStatus.NOT_FOUND);
 		expect(res.body.error).toEqual(RESOURCE_NOT_FOUND);
+	});
+
+	test('User should be able to see validation error, if the number of answers are less than 2', async () => {
+		const res = await superTest(app)
+			.post('/survey')
+			.send({
+				question: 'what is your fav color',
+				answers: ['black'],
+			})
+			.expect(HttpStatus.BAD_REQUEST);
+		expect(res.body.error).toEqual(expect.objectContaining(VALIDATION_ERROR));
 	});
 });

@@ -17,3 +17,9 @@ export const RESOURCE_NOT_FOUND = {
 	message: 'Resource not found',
 	name: 'RESOURCE_NOT_FOUND',
 };
+
+export const VALIDATION_ERROR = {
+	statusCode: HttpStatus.BAD_REQUEST,
+	message: 'Some of submitted are invalid',
+	name: 'VALIDATION_ERROR',
+};
