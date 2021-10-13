@@ -12,7 +12,7 @@ class Logger extends ServiceBase {
 		console.log(...params);
 	}
 	error(...params) {
-		console.error(...params);
+		console.log(...params);
 	}
 }
 

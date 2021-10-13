@@ -21,9 +21,7 @@ app.use(function (error, req, res, next) {
 
 app.use(function (error, req, res, next) {
 	if (!res.headersSent && error.statusCode) {
-		res.status(error.statusCode).send({
-			error: error,
-		});
+		res.status(error.statusCode).send({ error: error });
 	} else {
 		next(error);
 	}
