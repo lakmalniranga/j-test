@@ -7,6 +7,7 @@ import {
 import surveyRepository from '@modules/survey/repository';
 import { throwError } from '@utils/helpers';
 import Survey from '@dto/Survey';
+
 class SurveyBusiness {
 	async getSurvey({ surveyId }) {
 		const survey = surveyRepository.getSurveyById({ surveyId });
