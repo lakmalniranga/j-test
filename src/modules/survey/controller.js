@@ -13,3 +13,12 @@ export async function getSurvey(req, res) {
 	const survey = await surveyBusiness.getSurvey({ surveyId });
 	return res.json(survey);
 }
+
+export async function answerToSurvey(req, res) {
+	const {
+		params: { surveyId },
+		body: { answerId },
+	} = req;
+	await surveyBusiness.answerToSurvey({ surveyId, answerId: +answerId });
+	return res.status(HttpStatus.CREATED).json({ message: 'Your answer has been recorded!' });
+}

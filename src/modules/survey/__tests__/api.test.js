@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes';
 import superTest from 'supertest';
 
 import app from '@src/app';
-import { RESOURCE_NOT_FOUND, VALIDATION_ERROR } from '@errors';
+import { INVALID_ANSWER_GIVEN, RESOURCE_NOT_FOUND, VALIDATION_ERROR } from '@errors';
 import surveyRepository from '@modules/survey/repository';
 
 const requestData = {
@@ -48,5 +48,30 @@ describe('modules/survey', () => {
 			})
 			.expect(HttpStatus.BAD_REQUEST);
 		expect(res.body.error).toEqual(expect.objectContaining(VALIDATION_ERROR));
+	});
+
+	test('User should be able to provide answers to a survey', async () => {
+		// Create survey
+		const surveyId = surveyRepository.createSurvey({ ...requestData });
+
+		await superTest(app)
+			.post(`/survey/${surveyId}/answer`)
+			.send({ answerId: 2 })
+			.expect(HttpStatus.CREATED);
+
+		const answers = surveyRepository.getAnswersBySurveyId({ surveyId });
+		expect(answers[0]).toEqual(expect.objectContaining({ surveyId, answerId: 2 }));
+	});
+
+	test('User should NOT be able to provide invalid answerId to a survey', async () => {
+		// Create survey
+		const surveyId = surveyRepository.createSurvey({ ...requestData });
+
+		const res = await superTest(app)
+			.post(`/survey/${surveyId}/answer`)
+			.send({ answerId: 5 })
+			.expect(HttpStatus.BAD_REQUEST);
+
+		expect(res.body.error).toEqual(expect.objectContaining(INVALID_ANSWER_GIVEN));
 	});
 });

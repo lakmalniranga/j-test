@@ -1,15 +1,14 @@
 import promiseRouter from 'express-promise-router';
 
-import { createSurveyValidation } from '@modules/survey/req-validation';
-import { getSurvey, createSurvey } from '@modules/survey/controller';
+import { createSurveyValidation, answerToSurveyValidation } from '@modules/survey/req-validation';
+import { getSurvey, createSurvey, answerToSurvey } from '@modules/survey/controller';
 import { validateReq } from '@utils/helpers';
 
 const router = promiseRouter();
 
 router.get('/:surveyId', getSurvey);
 router.post('/', validateReq('body', createSurveyValidation), createSurvey);
-
-// TODO: Answer to a survey
+router.post('/:surveyId/answer', validateReq('body', answerToSurveyValidation), answerToSurvey);
 
 // TODO: Get results of survey
 

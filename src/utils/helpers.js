@@ -14,3 +14,17 @@ export function validateReq(dataKey, schema) {
 		return Promise.resolve('next');
 	};
 }
+
+/**
+ * If the error is unhandled, fallback error will be returned
+ *
+ * @param {Error} error could be an unhandled error or handled error
+ * @param {Error} fallbackError pre-defined error in application
+ */
+export function throwError(error, fallbackError) {
+	if (error.handledError) {
+		throw error;
+	}
+
+	throw fallbackError;
+}

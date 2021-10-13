@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 const surveys = [];
+const answers = [];
 
 export class SurveyRepository {
 	getSurveyById({ surveyId }) {
@@ -10,10 +11,20 @@ export class SurveyRepository {
 	createSurvey({ question, answers }) {
 		const surveyId = uuidv4();
 		const posibleAnswers = answers.map((answer, index) => {
-			return { id: index, value: answer };
+			return { answerId: index, value: answer };
 		});
 		surveys.push({ surveyId, question, answers: posibleAnswers });
 		return surveyId;
+	}
+
+	addAnswer({ surveyId, answerId }) {
+		const surveyAnswerId = uuidv4();
+		answers.push({ surveyAnswerId, surveyId, answerId, createdAt: new Date() });
+		return surveyAnswerId;
+	}
+
+	getAnswersBySurveyId({ surveyId }) {
+		return answers.filter((survey) => survey.surveyId === surveyId);
 	}
 }
 
